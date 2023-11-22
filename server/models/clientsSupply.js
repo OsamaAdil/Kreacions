@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 let clientsSupplySchema = new Schema(
   {
-    clientID: {
+    clientId: {
       type: mongoose.Types.ObjectId,
       ref: "clients",
       required: true,

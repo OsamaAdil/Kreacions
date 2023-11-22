@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 let vendorBuysSchema = new Schema(
   {
-    metalID: {
+    metalId: {
       type: mongoose.Types.ObjectId,
       ref: "metals",
       required: true,

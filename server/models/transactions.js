@@ -3,31 +3,25 @@ const { Schema } = mongoose;
 
 let transactionsSchema = new Schema(
   {
-    companyDetails: {
-      _id: false,
-      companyId: {
-        type: mongoose.Types.ObjectId,
-        ref: "locations",
-      },
-      locationId: {
-        type: mongoose.Types.ObjectId,
-        ref: "locations",
-      },
+    companyId: {
+      type: mongoose.Types.ObjectId,
+      ref: "companies",
+      // required: true
     },
     type: {
       type: String,
       enum: ["buy", "sell"],
-      required: true,
+      // required: true,
     },
-    clientID: {
+    clientId: {
       type: mongoose.Types.ObjectId,
       ref: "clients",
-      required: true,
+      // required: true,
     },
-    vendorID: {
+    vendorId: {
       type: mongoose.Types.ObjectId,
       ref: "vendors",
-      required: true
+      // required: true
     },
     metalDetails: {
         _id: false,
@@ -48,7 +42,7 @@ let transactionsSchema = new Schema(
           type: Number,
         },
       },
-    middleAgentID: {
+    middleAgentId: {
       type: mongoose.Types.ObjectId,
       ref: "middleAgents",
     },
@@ -78,6 +72,10 @@ let transactionsSchema = new Schema(
     },
     metalStatusUpdate: {
       type: String,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
     },
     notesHistory: [{
       _id: false,

@@ -15,7 +15,7 @@ let middleAgentsSchema = new Schema(
       type: String,
       trim: true,
       lowercase: true,
-      unique: true,
+      // unique: true,
       match: [
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
         "Please fill a valid email address",
@@ -37,6 +37,33 @@ let middleAgentsSchema = new Schema(
     listOfCurrencies: {
       type: [String],
       default: [],
+    },
+    accountDetails:
+    {
+      bankName: {
+        type: String,
+        required: true,
+      },
+      accountName: {
+        type: String,
+        required: true,
+      },
+      accountNumber: {
+        type: String,
+        required: true,
+      },
+      IFSCCode: {
+        type: String,
+        required: true,
+      },
+      branchName: {
+        type: String,
+        required: true,
+      },
+      swiftCode: {
+        type: String,
+        required: true,
+      },
     },
     notesHistory: [
       {

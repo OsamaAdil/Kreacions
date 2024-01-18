@@ -4,17 +4,17 @@ const formatRequest = require('../middlewares/formatRequest');
 // const authenticator = require('../middlewares/authenticator');
 
 const {
-  createUser,
-  getUsers,
-  editUser,
-  deleteUser
-} = require('../controllers/users');
+  createPrivileges,
+  getPrivilege,
+  editPrivileges,
+  deletePrivileges
+} = require('../controllers/privileges');
 
 router.post('/', formatRequest, function (req, res, next) {
   const data = req.query;
   data.req = req.data;
   data.body = req.body;
-  createUser(data, function(err, response) {
+  createPrivileges(data, function(err, response) {
       if (err) {
           console.log("entered into error", err);
           return res.status(err.status).send(err);
@@ -29,7 +29,7 @@ router.get('/', formatRequest, function (req, res, next) {
   data.req = req.data;
   console.log("data", data);
 
-  getUsers(data, function(err, response) {
+  getPrivilege(data, function(err, response) {
       if (err) {
           console.log("entered into error", err);
           return res.status(err.status).send(err);
@@ -46,7 +46,7 @@ router.patch('/', formatRequest, function (req, res, next) {
   data.body = req.body;
   console.log("data", data);
 
-  editUser(data, function(err, response) {
+  editPrivileges(data, function(err, response) {
       if (err) {
           console.log("entered into error", err);
           return res.status(err.status).send(err);
@@ -62,7 +62,7 @@ router.delete('/', formatRequest, function (req, res, next) {
   data.body = req.body;
   console.log("data", data);
 
-  deleteUser(data, function(err, response) {
+  deletePrivileges(data, function(err, response) {
       if (err) {
           console.log("entered into error", err);
           return res.status(err.status).send(err);

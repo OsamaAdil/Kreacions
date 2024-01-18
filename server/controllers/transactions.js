@@ -1,160 +1,142 @@
-const Transactions = require("../models/transactions");
+const Transaction = require("../models/transactions");
+const multer = require('multer');
+const uploadImage = multer();
+const {resStr} = require("../helpers/responseStructure");
 
 const rectifyName = function (a) {
   return a.toLowerCase();
 };
 
 //Create
-const createTransactions = function (req, res) {
-  let sendRes = {
-    message: "",
-    error: true,
-    data: [],
-  };
-
-  if (
-    !req.body.customerId ||
-    !req.body.productDetails.productVariantId ||
-    !req.body.productDetails.productId ||
-    !req.body.productDetails.itemCount ||
-    !req.body.totalProductsPrice ||
-    !req.body.shippingCharges ||
-    !req.body.paymentMethod
-  ) {
-    sendRes.message = "Please add the required data";
-    return res.status(400).send(sendRes);
+const createTransaction = function (data, cb){
+  if (!data.body.clientId || !data.body.companyId ) {
+    return cb(resStr(400, "Please add required details", null, true));
   }
 
-  let TransactionsPayload = {
-    customerId: req.body.customerId,
-    productDetails: {
-      productVariantId: req.body.productDetails.productVariantId,
-      productId: req.body.productDetails.productId,
-      itemCount: req.body.productDetails.itemCount,
-    },
-    totalProductsPrice: req.body.totalProductsPrice,
-    shippingCharges: req.body.shippingCharges,
-    paymentMethod: req.body.paymentMethod
+  let TransactionPayload = {
+    clientId: data.body.clientId,
+    companyId: data.body.companyId,
+    vendorId: data.body.vendorId,
+    metalId: data.body.metalDetails.metalId
   };
-  
-  Transactions.create(TransactionsPayload, (err, resp) => {
+
+  let CreateTransactionPayload = {
+    companyId: data.body.companyId,
+    clientId: data.body.clientId,
+    date: data.body.date,
+    orderType: data.body.orderType,
+    type: data.body.type,
+    vendorId: data.body.vendorId,
+    metalDetails: {
+      metalId: data.body.metalDetails.metalId,
+      metalPriceAtTransaction: data.body.metalDetails.metalPriceAtTransaction,
+      metalQuantity: data.body.metalDetails.metalQuantity,
+      purityPercentage: data.body.metalDetails.purityPercentage,
+    },
+    middleAgentId: data.body.middleAgentId,
+    currency: data.body.currency,
+    transactionType: data.body.transactionType,
+    bankTransactionId: data.body.bankTransactionId,
+    actualAmount: data.body.actualAmount,
+    discountPercentage: data.body.discountPercentage,
+    commissionValue: data.body.commissionValue,
+    transactionStatus: data.body.transactionStatus,
+    commissionPaidStatus: data.body.commissionPaidStatus,
+    metalStatusUpdate: data.body.metalStatusUpdate,
+    notesHistory: data.body.notesHistory,
+  };
+
+  Transaction.findOne(TransactionPayload, (err, resp) => {
     if (err) {
-      return res.status(500).send(sendRes);
+      return cb(resStr(500, "Error in finding", null, true))
     }
-    sendRes.message = "inserted succesfully";
-    sendRes.error = false;
-    return res.status(200).send(sendRes);
+    if (resp) {
+      return cb(null, resStr(400, "Already exists", resp, false))
+    }
+    Transaction.create(CreateTransactionPayload, (errC, resC) => {
+      if (errC) {
+        return cb(resStr(500, "Error while creating", null, true))
+      }
+      return cb(null, resStr(200, "Inserted succesfully", resC, false))
+    });
   });
 };
-exports.createTransactions = createTransactions;
+exports.createTransaction = createTransaction;
 
 // Get
-const getTransactions = function (req, res) {
-  let sendRes = {
-    message: "",
-    error: true,
-    data: [],
-  };
-
-  let findData = {};
-
-  Transactions.find(findData, (err, resp) => {
+const getTransaction = function (data, cb) {
+  let findData = { };
+  Transaction.find(findData, (err, resp) => {
     if (err) {
-      sendRes.message = "Server error while fectching details from server";
-      return res.status(500).send(sendRes);
+      return cb(resStr(500, "Server error while fetching details from server", null, true))
     }
-    sendRes.message = "fetched succesfully";
-    sendRes.error = false;
-    sendRes.data = resp;
-    return res.status(200).send(sendRes);
+    return cb(null, resStr(200, "succesfully fetched details", resp, false))
   });
 };
-exports.getTransactions = getTransactions;
+exports.getTransaction = getTransaction;
 
 // Update
-const editTransactions = function (req, res) {
-  let sendRes = {
-    message: "",
-    error: true,
-    data: [],
-  };
-
-  if (  
-    !req.body.transactionId ||
-    !req.body.customerId ||
-    !req.body.productDetails.productVariantId ||
-    !req.body.productDetails.productId ||
-    !req.body.productDetails.itemCount ||
-    !req.body.totalProductsPrice ||
-    !req.body.shippingCharges ||
-    !req.body.paymentMethod
-    ) {
-    sendRes.message = "Bad request from user";
-    return res.status(400).send(sendRes);
+const editTransaction = function (data, cb) {
+  if (!data.body.transactionId) {
+    return cb(resStr(400, "Please add required details", null, true))
   }
-
-  let query = { _id: req.body.transactionId };
-
-  let updateTransactions = {
-    customerId: req.body.customerId,
-    productDetails: {
-      productVariantId: req.body.productDetails.productVariantId,
-      productId: req.body.productDetails.productId,
-      itemCount: req.body.productDetails.itemCount,
+  
+  let query = { _id : data.body.transactionId };
+  
+  let updateTransactionPayload = {
+    companyId: data.body.companyId,
+    clientId: data.body.clientId,
+    date: data.body.date,
+    orderType: data.body.orderType,
+    type: data.body.type,
+    vendorId: data.body.vendorId,
+    metalDetails: {
+      metalId: data.body.metalDetails.metalId,
+      metalPriceAtTransaction: data.body.metalDetails.metalPriceAtTransaction,
+      metalQuantity: data.body.metalDetails.metalQuantity,
+      purityPercentage: data.body.metalDetails.purityPercentage,
     },
-    totalProductsPrice: req.body.totalProductsPrice,
-    shippingCharges: req.body.shippingCharges,
-    paymentMethod: req.body.paymentMethod
+    middleAgentId: data.body.middleAgentId,
+    currency: data.body.currency,
+    transactionType: data.body.transactionType,
+    bankTransactionId: data.body.bankTransactionId,
+    actualAmount: data.body.actualAmount,
+    discountPercentage: data.body.discountPercentage,
+    commissionValue: data.body.commissionValue,
+    transactionStatus: data.body.transactionStatus,
+    commissionPaidStatus: data.body.commissionPaidStatus,
+    metalStatusUpdate: data.body.metalStatusUpdate,
+    notesHistory: data.body.notesHistory
   };
-
+  
   let options = { new: true };
 
-  Transactions.findOneAndUpdate(
-    query,
-    updateTransactions,
-    options,
-    (err, resp) => {
-      if (err) {
-        sendRes.message = "Server error while fectching details from server";
-        return res.status(500).send(sendRes);
-      }
-      sendRes.message = `updated data succesfully`;
-      sendRes.data = resp;
-      sendRes.error = false;
-      return res.status(200).send(sendRes);
-    }
-  );
-};
-exports.editTransactions = editTransactions;
-
-// Delete
-const deleteTransactions = function (req, res) {
-  let sendRes = {
-    message: "",
-    error: true,
-  };
-
-  if (!req.body.transactionId) {
-    sendRes.message = "Data not provided to delete the data!";
-    return res.status(400).send(sendRes);
-  }
-
-  let query = { _id: req.body.transactionId };
-
-  let updateTransactions = {
-    isDelete: true,
-  };
-
-  let options = { new: true };
-
-  Transactions.findOneAndUpdate(query, updateTransactions, options,(err, resp) => {
+  Transaction.findOneAndUpdate(query, updateTransactionPayload, options, (err, resp) => {
     if (err) {
-      sendRes.message = "Server error while fectching details from server";
-      return res.status(500).send(sendRes);
-    }
-    sendRes.message = `deleted succesfully`;
-    sendRes.data = resp;
-    return res.status(200).send(sendRes);
+     return cb(resStr(500, "Server error while fetching details from server", null, true));
+   }
+   return cb(null, resStr(200, "updated data succesfully", resp, false));
   });
 };
-exports.deleteTransactions = deleteTransactions;
+exports.editTransaction = editTransaction;
+
+// Delete
+const deleteTransaction = function (data, cb) {
+  if (!data.body.transactionId) {
+    return cb(resStr(400, "Please add required details", null, true))
+  }
+
+  let query = { _id : data.body.transactionId };
+  let updateVendorsBuy = {
+    isActive: false,
+  };
+  let options = { new: true };
+
+  Transaction.findOneAndUpdate(query, updateVendorsBuy, options, (err, resp) => {
+     if (err) {
+      return cb(resStr(500, "Server error while fetching details from server", null, true))
+    }
+    return cb(null, resStr(200, "deleted succesfully", resp, false))
+  });
+};
+exports.deleteTransaction = deleteTransaction;

@@ -1,14 +1,14 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-let jobOrderSchema = new Schema(
+let jobOrdersTransactionSchema = new Schema(
   {
     companyId: {
       type: mongoose.Types.ObjectId,
       ref: "company",
       required: true,
     },
-    clientID: {
+    clientId: {
       type: mongoose.Types.ObjectId,
       ref: "clients",
       required: true,
@@ -30,12 +30,12 @@ let jobOrderSchema = new Schema(
       type: Number,
       required: true,
     },
-    metalID: {
+    metalId: {
       type: mongoose.Types.ObjectId,
       ref: "metals",
       required: true,
     },
-    metalCurrentPrice: {
+    metalPriceAtTransaction: {
       type: Number,
       required: true,
     },
@@ -77,6 +77,10 @@ let jobOrderSchema = new Schema(
     metalStatusUpdate: {
       type: String,
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
     notesHistory: [
         {
           _id: false,
@@ -93,5 +97,5 @@ let jobOrderSchema = new Schema(
   { timestamps: true }
 );
 
-let jobOrder = mongoose.model("jobOrder", jobOrderSchema);
-module.exports = jobOrder;
+let jobOrdersTransaction = mongoose.model("jobOrdersTransaction", jobOrdersTransactionSchema);
+module.exports = jobOrdersTransaction;

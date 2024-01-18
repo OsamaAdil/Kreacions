@@ -5,7 +5,7 @@ let metalsSchema = new Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: true
     },
     totalPureMetal: {
       type: Number,
@@ -15,6 +15,10 @@ let metalsSchema = new Schema(
     },
     totalValueBasedOnCurrentPrice: {
       type: Number,
+    },
+    isActive: {
+      type: Boolean,
+      default: true
     },
   },
   { timestamps: true }

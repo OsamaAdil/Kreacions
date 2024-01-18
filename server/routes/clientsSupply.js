@@ -4,17 +4,17 @@ const formatRequest = require('../middlewares/formatRequest');
 // const authenticator = require('../middlewares/authenticator');
 
 const {
-  createUser,
-  getUsers,
-  editUser,
-  deleteUser
-} = require('../controllers/users');
+  createClientsSupply,
+  getClientsSupply,
+  editClientsSupply,
+  deleteClientsSupply
+} = require('../controllers/clientsSupply');
 
 router.post('/', formatRequest, function (req, res, next) {
   const data = req.query;
   data.req = req.data;
   data.body = req.body;
-  createUser(data, function(err, response) {
+  createClientsSupply(data, function(err, response) {
       if (err) {
           console.log("entered into error", err);
           return res.status(err.status).send(err);
@@ -29,7 +29,7 @@ router.get('/', formatRequest, function (req, res, next) {
   data.req = req.data;
   console.log("data", data);
 
-  getUsers(data, function(err, response) {
+  getClientsSupply(data, function(err, response) {
       if (err) {
           console.log("entered into error", err);
           return res.status(err.status).send(err);
@@ -46,7 +46,7 @@ router.patch('/', formatRequest, function (req, res, next) {
   data.body = req.body;
   console.log("data", data);
 
-  editUser(data, function(err, response) {
+  editClientsSupply(data, function(err, response) {
       if (err) {
           console.log("entered into error", err);
           return res.status(err.status).send(err);
@@ -62,7 +62,7 @@ router.delete('/', formatRequest, function (req, res, next) {
   data.body = req.body;
   console.log("data", data);
 
-  deleteUser(data, function(err, response) {
+  deleteClientsSupply(data, function(err, response) {
       if (err) {
           console.log("entered into error", err);
           return res.status(err.status).send(err);
@@ -71,5 +71,6 @@ router.delete('/', formatRequest, function (req, res, next) {
       return res.status(response.status).send(response);
   });
 });
+
 
 module.exports = router;

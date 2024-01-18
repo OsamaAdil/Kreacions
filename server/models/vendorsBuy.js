@@ -1,16 +1,16 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-let vendorBuysSchema = new Schema(
+let vendorsBuySchema = new Schema(
   {
     metalId: {
       type: mongoose.Types.ObjectId,
-      ref: "metals",
+      // ref: "metals",
       required: true,
     },
-    vendorID: {
+    vendorId: {
       type: mongoose.Types.ObjectId,
-      ref: "vendors",
+      // ref: "vendors",
       required: true,
     },
     discountType: {
@@ -21,7 +21,7 @@ let vendorBuysSchema = new Schema(
     discountPercentage: {
       type: Number,
     },
-    middleAgentID: {
+    middleAgentId: {
       type: mongoose.Types.ObjectId,
       ref: "middleAgents",
     },
@@ -42,5 +42,5 @@ let vendorBuysSchema = new Schema(
   { timestamps: true }
 );
 
-let vendorBuys = mongoose.model("vendorBuys", vendorBuysSchema);
-module.exports = vendorBuys;
+let vendorsBuy = mongoose.model("vendorsBuy", vendorsBuySchema);
+module.exports = vendorsBuy;

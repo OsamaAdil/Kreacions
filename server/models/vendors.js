@@ -5,8 +5,6 @@ let vendorSchema = new Schema(
   {
     vendorType: {
       type: String,
-      enum: ["company", "individual"],
-      required: true,
     },
     name: {
       type: String,
@@ -18,7 +16,7 @@ let vendorSchema = new Schema(
       type: String,
       trim: true,
       unique: true,
-      required: true,
+      // required: true,
     },
     email : {
         type: String,
@@ -34,24 +32,58 @@ let vendorSchema = new Schema(
       type: [String],
       default: [],
     },
-    accountNumber: {
-      type: String,
-      trim: true,
-      unique: true,
-    },
     country: {
       type: String,
     },
-    notesHistory: [{
-      _id: false,
-      note: {
+    accountDetails:
+    {
+      bankName: {
         type: String,
+        // required: true,
       },
-      timestamp: {
-        type: Date,
-        default: Date.now,
+      accountName: {
+        type: String,
+        // required: true,
       },
-    }],
+      accountNumber: {
+        type: String,
+        // required: true,
+      },
+      IFSCCode: {
+        type: String,
+        // required: true,
+      },
+      branchName: {
+        type: String,
+        // required: true,
+      },
+      swiftCode: {
+        type: String,
+        // required: true,
+      },
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+    notesHistory: [
+      {
+        _id: false,
+        user: {
+          // type: mongoose.Types.ObjectId,
+          // ref: 'users'
+          type: String,
+        },
+        note: {
+          type: String, 
+          // required: true
+        },
+        timestamp: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

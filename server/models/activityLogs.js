@@ -6,7 +6,7 @@ let activityLogsSchema = new Schema(
     userId: {
       type: mongoose.Types.ObjectId,
       ref: "users",
-      required: true,
+      required: true
     },
     actionType: {
       type: String,
@@ -19,21 +19,39 @@ let activityLogsSchema = new Schema(
         "sales",
         "orders",
         "activitylogs",
-        "reports",
+        "reports"
       ],
       required: true,
     },
-    changes: {
-        type: Map,
-        of: new Schema({
-          previous: {
-            type: String,
-          },
-          current: {
-            type: String,
-          },
-        }),
+    // changes: {
+    //   type: Map,
+    //   of: new Schema({
+    //     previous: {
+    //       type: String,
+    //     },
+    //     current: {
+    //       type: String,
+    //     },
+    //   }),
+    // },
+    
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+
+    notesHistory: [
+      {
+        _id: false,
+        note: {
+          type: String,
+        },
+        timestamp: {
+          type: Date,
+          default: Date.now,
+        },
       },
+    ],
   },
   { timestamps: true }
 );

@@ -52,13 +52,9 @@ const getCategory = function (req, res) {
     data: []
   };
 
-  let findData = { isActive: true };
-  let projection = {
-    name: 1,
-    _id: 1,
-  };
+  let findData = {  };
 
-  Category.find(findData, projection, (err, resp) => {
+  Category.find(findData, (err, resp) => {
     if (err) {
       sendRes.message = "Server error while fectching details from server";
       return res.status(500).send(sendRes);
@@ -120,7 +116,7 @@ const deleteCategory = function (req, res) {
   let query = { _id : req.body.categoryId };
 
   let updateCategory = {
-    isActive: false,
+    isDelete: true,
   };
 
   Category.findOneAndUpdate(query, updateCategory, (err, resp) => {

@@ -8,12 +8,12 @@ let clientsSupplySchema = new Schema(
       ref: "clients",
       required: true,
     },
-    metalID: {
-        type: mongoose.Types.ObjectId,
-        ref: "metals",
-        required: true,
-      },
-    middleAgentID: {
+    metalId: {
+      type: mongoose.Types.ObjectId,
+      ref: "metals",
+      required: true,
+    },
+    middleAgentId: {
       type: mongoose.Types.ObjectId,
       ref: "middleAgents",
     },
@@ -24,22 +24,29 @@ let clientsSupplySchema = new Schema(
       type: Number,
     },
     discountType: {
-        type: String,
-        enum: ["metal", "price"],
-      },
-    currency: {
       type: String,
+      enum: ["metal", "price"],
     },
-    notesHistory: [{
-      _id: false,
-      note: {
-        type: String,
+    listOfCurrencies: {
+      type: [String],
+      default: [],
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+    notesHistory: [
+      {
+        _id: false,
+        note: {
+          type: String,
+        },
+        timestamp: {
+          type: Date,
+          default: Date.now,
+        },
       },
-      timestamp: {
-        type: Date,
-        default: Date.now,
-      },
-    }],
+    ],
   },
   { timestamps: true }
 );

@@ -46,6 +46,10 @@ let clientsSchema = new Schema(
     country: {
       type: String,
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
     notesHistory: [{
       _id: false,
       note: {

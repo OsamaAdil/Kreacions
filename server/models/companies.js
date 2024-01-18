@@ -3,32 +3,59 @@ const { Schema } = mongoose;
 
 let companiesSchema = new Schema(
   {
-    companyName: {
+    name: {
       type: String,
       required: true,
     },
-    locationDetails: [{
-      _id: false,
-      id: {
-        type: String,
+    locationDetails: [
+      {
+        _id: false,
+        id: {
+          type: String,
+        },
+        country: {
+          type: String,
+        },
+        locality: {
+          type: String,
+        },
+        isActive: {
+          type: Boolean,
+          default: true,
+        },
       },
-      country: {
-        type: String,
-      },
-      locality: {
-        type: String,
-      },
-      isActive: {
-        type: Boolean,
-        default: true,
-      },
-    }],
+    ],
     companyLogo: {
-      type: String, // Assuming the logo will be stored as a file path or URL
+      imageData: {
+        type: Buffer,
+        // required: true,
+      },
+      // contentType: {
+      //   type: String,
+      //   required: true,
+      // },
     },
-    notesHistory: {
-      type: Array
+    isActive: {
+      type: Boolean,
+      default: true,
     },
+    notesHistory: [
+      {
+        _id: false,
+        user: {
+          type: mongoose.Types.ObjectId,
+          ref: 'users'
+        },
+        note: {
+          type: String, 
+          required: true
+        },
+        timestamp: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

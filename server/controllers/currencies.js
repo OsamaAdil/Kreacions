@@ -20,6 +20,7 @@ const createCurrency = function (data, cb) {
   let CreateCurrencyPayload = {
     name: rectifyName(data.body.name),
     country: data.body.country,
+    currencyIcon: data.body.currencyIcon
   };
 
   Currency.findOne(CurrencyPayload, (err, resp) => {
@@ -41,7 +42,15 @@ exports.createCurrency = createCurrency;
 
 // Get
 const getCurrency = function (data, cb) {
-  let findData = { };
+  let findData = {};
+  
+  if (!data.admin) {
+    findData = { 
+      isActive: true,
+      isDelete: false
+    };
+  }
+
   Currency.find(findData, (err, resp) => {
     if (err) {
       return cb(resStr(500, "Server error while fetching details from server", null, true))

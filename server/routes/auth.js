@@ -1,57 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const formatRequest = require('../middlewares/formatRequest');
-const encryptResponse = require('../helpers/encryption');
-
+// const authenticator = require('../middlewares/authenticator');
 
 const {
-  createCompany,
-  getCompany,
-  editCompany,
-  deleteCompany
-} = require('../controllers/companies');
+    register, 
+    changePassword, 
+    login,
+    token
+} = require('../controllers/auth');
 
-router.post('/', formatRequest, function (req, res, next) {
+router.post('/register', formatRequest, function (req, res, next) {
   const data = req.query;
   data.req = req.data;
   data.body = req.body;
-  createCompany(data, function(err, response) {
-      if (err) {
-          console.log("entered into error", err);
-          return res.status(err.status).send(err);
-      }
-      console.log("response", response);
-      
-      return res.status(response.status).send(response);
-  });
-});
-
-router.get('/', formatRequest, function (req, res, next) {
-  const data = req.query;
-  data.req = req.data;
-  console.log("data", data);
-
-  getCompany(data, function(err, response) {
-      if (err) {
-          console.log("entered into error", err);
-          return res.status(err.status).send(err);
-      }
-      console.log("response", response);
-      
-      const encryptedResponse = encryptResponse(response);
-
-      return res.status(response.status).send(encryptedResponse);
-  });
-
-});
-
-router.patch('/', formatRequest, function (req, res, next) {
-  const data = req.query;
-  data.req = req.data;
-  data.body = req.body;
-  console.log("data", data);
-
-  editCompany(data, function(err, response) {
+  register(data, function(err, response) {
       if (err) {
           console.log("entered into error", err);
           return res.status(err.status).send(err);
@@ -61,13 +24,29 @@ router.patch('/', formatRequest, function (req, res, next) {
   });
 });
 
-router.delete('/', formatRequest, function (req, res, next) {
+router.post('/changepassword', formatRequest, function (req, res, next) {
+  const data = req.query;
+  data.req = req.data;
+  console.log("data", data);
+
+  changePassword(data, function(err, response) {
+      if (err) {
+          console.log("entered into error", err);
+          return res.status(err.status).send(err);
+      }
+      console.log("response", response);
+      return res.status(response.status).send(response);
+  });
+
+});
+
+router.post('/login', formatRequest, function (req, res, next) {
   const data = req.query;
   data.req = req.data;
   data.body = req.body;
   console.log("data", data);
 
-  deleteCompany(data, function(err, response) {
+  login(data, function(err, response) {
       if (err) {
           console.log("entered into error", err);
           return res.status(err.status).send(err);
@@ -76,5 +55,22 @@ router.delete('/', formatRequest, function (req, res, next) {
       return res.status(response.status).send(response);
   });
 });
+
+router.post('/token', formatRequest, function (req, res, next) {
+    const data = req.query;
+    data.req = req.data;
+    data.body = req.body;
+    console.log("data", data);
+  
+    token(data, function(err, response) {
+        if (err) {
+            console.log("entered into error", err);
+            return res.status(err.status).send(err);
+        }
+        console.log("response", response);
+        return res.status(response.status).send(response);
+    });
+  });
+
 
 module.exports = router;

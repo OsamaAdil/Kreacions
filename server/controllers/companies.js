@@ -34,6 +34,7 @@ const createCompany = function (data, cb) {
     if (resp) {
       return cb(null, resStr(400, "Already exists", resp, false))
     }
+
     Company.create(CreateCompanyPayload, (errC, resC) => {
       if (errC) {
         return cb(resStr(500, "Error while creating company", null, true))

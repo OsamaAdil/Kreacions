@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+const auth = require("./auth");
 const companies = require('./companies');
 const currencies = require('./currencies');
 const vendors = require('./vendors');
@@ -15,6 +16,7 @@ const privileges = require('./privileges');
 const activityLogs = require('./activityLogs');
 const jobordertransactions = require('./jobOrderTransactions');
 
+router.use("/auth", auth);
 router.use('/companies', companies);
 router.use('/currencies', currencies);
 router.use('/vendors', vendors);

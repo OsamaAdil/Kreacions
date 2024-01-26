@@ -11,15 +11,14 @@ let currenciesSchema = new Schema(
         type: String,
         required: true,
     },
+
     isActive: {
       type: Boolean,
       default: true,
     },
-    // currencyIcon: {
-    //   imageData: {
-    //     type: Buffer
-    //   },
-    // }
+    currencyIcon: {
+        type: String
+    }
   },
   { timestamps: true }
 );
